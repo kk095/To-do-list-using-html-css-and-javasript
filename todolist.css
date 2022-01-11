@@ -290,43 +290,8 @@ button.plus:active{
     text-align: right;
     background: transparent;
 }
-.filter{
-    position: relative;
-    float: right;
-    width:20px;
-}
-.filter i{
-    font-size: 1.3rem;
-}
-.dropdown{
-    width:auto;
-    padding: 0px 10px;
-    height:0px;
-    position: absolute;
-    right:0px;
-    top: 22px;
-    background: var(--container-highlight-color);
-    overflow: hidden;
-    transition: all .75s ease-out;
-    align-items: center;
-}
-.dropdown option{
-    padding: 10px 2px;
-    color: var(--secondary-color);
-    width: 100%;
-    text-align: center;
-}
-.tags{
-    color: black;
-}
 
-.dropdown option:hover{
-    background: white;
-    color: black;
-}
-.dropdown-clicked{
-    height:350px;
-}
+
 .task-list .my-info{
     display: flex;
     justify-content: space-around;

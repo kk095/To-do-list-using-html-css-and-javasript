@@ -9,33 +9,7 @@
     const TopToDos = document.querySelector(".top-todos");
     const toDos = document.querySelector(".todos");
 
-    let toDoList = [
-        {
-            id: "454vy52g6531",
-            task: "complete to do",
-            date: "2021-12-7",
-            tag: "home",
-            star: false,
-            done: false,
-        },
-        {
-            id: "454vy52g6532",
-            task: "complete to do",
-            date: "2021-12-7",
-            tag: "home",
-            star: false,
-            done: false,
-        },
-        {
-            id: "454vy52g6533",
-            task: "complete to do",
-            date: "2021-12-7",
-            tag: "home",
-            star: false,
-            done: false,
-        },
-
-    ]
+    let toDoList = []
 
     // it is a driver function
     function main() {
@@ -161,7 +135,7 @@
             obj.star = false;
             obj.done = false;
             toDoList.push(obj);
-            print();
+            main();
             cancelBtn();
         }
     }
@@ -240,7 +214,7 @@
 
                     }
                 </div>
-                <i class=" star fas fa-star" id=${task.id}></i>
+                <i class=" star fas fa-star" id="${task.id}"></i>
                 <div class="tasks-category">
                     <div class="tags ${task.tag}">
                         ${task.tag}
@@ -285,7 +259,7 @@
                         
                 </div>
                 <div class="star-far">
-                   <i class="star far fa-star" id=${task.id}></i>
+                   <i class="star far fa-star" id="${task.id}"></i>
                 </div>
                 <div class="tasks-category">
                     <div class="tags ${task.tag}">
