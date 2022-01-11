@@ -130,7 +130,7 @@ button.plus:active{
 .emptylist{
     width: 100%;
     height: 40vh;
-    background: url(../img/emptylist.png);
+    background: url(./img/emptylist.png);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
