@@ -1,6 +1,5 @@
 (function () {
     const inputDiv = document.querySelector(".to-do-inputs");
-    const cancel = document.querySelector("#cancel");
     const taskCount = document.querySelector("#taskCount");
     const noTasksDiv = document.querySelector(".no-tasks");
     const taskList = document.querySelector(".task-list");
@@ -38,16 +37,18 @@
 
     ]
 
+    // it is a driver function
     function main() {
+        taskCount.innerHTML = `<b> ${toDoList.length} </b>`
         if (toDoList.length === 0) {
-            taskCount.innerHTML = '<b>0</b>';
             noTasksDiv.style.display = "block";
             listHeader.style.display = "none";
             taskList.style.display = "none";
-
         }
         else {
-            let totalTasks = toDoList.length;
+            noTasksDiv.style.display = "none";
+            listHeader.style.display = "block";
+            taskList.style.display = "block";
             const topTasks = toDoList.filter(list => list.star === true);
             const normalTasks = toDoList.filter(list => list.star != true);
             if (topTasks.length === 0) {
@@ -63,41 +64,66 @@
                 toDos.style.display = "block";
             }
 
-            taskCount.innerHTML = `<b> ${totalTasks} </b>`
-            noTasksDiv.style.display = "none";
-            listHeader.style.display = "block";
-            taskList.style.display = "block";
             print();
-            let totalStar = toDoList.filter(list => list.star === true);
-            if (totalStar.length >= 3) {
-                let stars = document.querySelectorAll(".star-far");
-                stars.forEach((s) => {
-                    console.log(s);
-                    s.style.display = "none";
-                })
-            }
+
         }
-        const checkboxInput = document.querySelectorAll("input");
-        for (let i = 0; i < checkboxInput.length - 2; i++) {
-        checkboxInput[i].addEventListener("change", function (e) {
-            console.log(e.target.id);
-            if (this.checked) {
-                let checkedtask = toDoList.filter(task => task.id === this.id);
-                checkedtask[0].done = true;
-            }
-            else {
-                let checkedtask = toDoList.filter(task => task.id === this.id);
-                checkedtask[0].done = false;                   
-            }
-            main();
-        })
-    }
-        console.log(toDoList);
 
     }
     main();
 
+   
+    document.addEventListener("click", function (e) {
 
+        if (e.target.classList[0] === "plus") {
+            plusFn();
+        }
+        else if (e.target.id === "cancel") {
+            cancelBtn();
+        }
+        else if (e.target.id === "submit-form") {
+            create(e);
+        }
+        else if (e.target.type === "checkbox") {
+            Update(e);
+        }
+        else if (e.target.classList[0] === "delete-btn") {
+            destroy();
+        }
+        else if (e.target.classList[0] === "star") {
+            starBtn(e);
+        }
+    })
+
+    // this function will show the input form to add todo task
+    function plusFn() {
+        let x = 0;
+        let interval = setInterval(() => {
+            inputDiv.style.bottom = (-100 + x) + '%'
+            if (x == 100) {
+                listHeader.style.display = "none";
+                clearInterval(interval);
+            }
+            x++;
+        }, 5);
+    }
+
+    // this function will hide the input form
+    function cancelBtn() {
+        let x = 0;
+        document.querySelector("#task").value = "";
+        document.querySelector("#categories").value = "none";
+        document.querySelector("#date").value = "";
+        listHeader.style.display = "block";
+        let interval = setInterval((e) => {
+            inputDiv.style.bottom = (0 - x) + '%'
+            if (x == 100) {
+                clearInterval(interval);
+            }
+            x++;
+        }, 5);
+    }
+
+    // It will generate unique id of 12 characters 
     function uniqueIdGenerator() {
         const chars = '1234567890qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*()?<>';
         let key = '';
@@ -108,10 +134,8 @@
     }
 
 
-
-
-    // To create tasks
-    function create(e) {
+    // This function read your inputs and make new todo task
+    function create() {
         const task = document.querySelector("#task").value;
         const category = document.querySelector("#categories").value;
         const date = document.querySelector("#date").value;
@@ -137,17 +161,51 @@
             obj.star = false;
             obj.done = false;
             toDoList.push(obj);
-            main();
-            console.log(toDoList);
+            print();
             cancelBtn();
         }
     }
 
 
+    // To update tasks that task is done or not
+    function Update(e) {
+        if (e.target.checked) {
+            let checkedtask = toDoList.filter(task => task.id === e.target.id);
+            checkedtask[0].done = true;
+        }
+        else {
+            let checkedtask = toDoList.filter(task => task.id === e.target.id);
+            checkedtask[0].done = false;
+        }
+        print();
+    }
+
+    // this function will delete all completed tasks
+    function destroy() {
+        for (let i = toDoList.length - 1; i >= 0; i--) {
+            if (toDoList[i].done) {
+                toDoList.splice(i, 1);
+            }
+        }
+        main()
+    }
+
+    // this function will convert task into top task and vise versa
+    function starBtn(e) {
+        const taskId = e.target.id;
+        let starTask = toDoList.filter(list => list.id === taskId);
+        if (starTask[0].star === true) {
+            starTask[0].star = false;
+        }
+        else {
+            starTask[0].star = true;
+        }
+        main();
+    };
 
 
-    // To print tasks
-    function print(e) {
+     // This function will print all the tasks
+     function print() {
         trueStar.innerHTML = "";
         falseStar.innerHTML = "";
         toDoList.forEach((task) => {
@@ -156,8 +214,8 @@
             <li>
             <div class="card">
                 <div class="my-info">
-                ${task.done?
-                    ` <div class="checkbox">
+                ${task.done ?
+                        ` <div class="checkbox">
                     <input type="checkbox" name="${task.id}" id="${task.id}" checked >
                     </div>
                     <div class="task-info">
@@ -168,7 +226,7 @@
                     ${task.date}
                     </span>
                     </div>` :
-                    `<div class="checkbox">
+                        `<div class="checkbox">
                     <input type="checkbox" name="${task.id}" id="${task.id}" >
                     </div>
                     <div class="task-info">
@@ -179,8 +237,8 @@
                     ${task.date}
                     </span>
                     </div>`
-                
-                }
+
+                    }
                 </div>
                 <i class=" star fas fa-star" id=${task.id}></i>
                 <div class="tasks-category">
@@ -198,8 +256,8 @@
             <div class="card">
                 <div class="my-info">
                    
-                        ${task.done?
-                            ` <div class="checkbox">
+                        ${task.done ?
+                        ` <div class="checkbox">
                                 <input type="checkbox" name="${task.id}" id="${task.id}" checked >
                             </div>
                             <div class="task-info">
@@ -211,7 +269,7 @@
                                     ${task.date}
                                 </span>
                             </div>` :
-                            `<div class="checkbox">
+                        `<div class="checkbox">
                             <input type="checkbox" name="${task.id}" id="${task.id}" >
                             </div>
                             <div class="task-info">
@@ -222,8 +280,8 @@
                             ${task.date}
                             </span>
                             </div>`
-                        
-                        }
+
+                    }
                         
                 </div>
                 <div class="star-far">
@@ -240,98 +298,16 @@
             }
 
         })
+        let totalStar = toDoList.filter(list => list.star === true);
+        if (totalStar.length >= 3) {
+            let stars = document.querySelectorAll(".star-far");
+            stars.forEach((s) => {
+                s.style.display = "none";
+            })
+        }
     }
-
-    const checkboxInput = document.querySelectorAll("input");
-    for (let i = 0; i < checkboxInput.length - 2; i++) {
-        checkboxInput[i].addEventListener("change", function (e) {
-            console.log(e.target.id);
-            if (this.checked) {
-                let checkedtask = toDoList.filter(task => task.id === this.id);
-                checkedtask[0].done = true;
-            }
-            else {
-                let checkedtask = toDoList.filter(task => task.id === this.id);
-                checkedtask[0].done = false;                   
-            }
-            main();
-        })
-    }
-
-    // To update tasks
-    function Update(e) {
-
-    }
-
-    // To delete tasks 
-    function destroy(e) {
-
-    }
-
-
-    function cancelBtn() {
-        let x = 0;
-        document.querySelector("#task").value = "";
-        document.querySelector("#categories").value = "none";
-        document.querySelector("#date").value = "";
-        listHeader.style.display = "block";
-        let interval = setInterval((e) => {
-            inputDiv.style.bottom = (0 - x) + '%'
-            if (x == 100) {
-                clearInterval(interval);
-            }
-            x++;
-        }, 5);
-    }
-
-
-    function starBtn(e) {
-        const taskId = e.target.id;
-        let starTask = toDoList.filter(list => list.id === taskId);
-        if (starTask[0].star === true) {
-            starTask[0].star = false;
-        }
-        else {
-            starTask[0].star = true;
-        }
-        main();
-    };
-
-    function deleteFn(){
-        for(let i=toDoList.length-1;i>=0;i--){
-            if(toDoList[i].done){
-                 toDoList.splice(i,1);
-            }
-        }
-        main()
-    }
-
-
-    document.addEventListener("click", function (e) {
-        if (e.target.classList[0] === "plus") {
-            let x = 0;
-            let interval = setInterval((e) => {
-                inputDiv.style.bottom = (-100 + x) + '%'
-                if (x == 100) {
-                    listHeader.style.display = "none";
-                    clearInterval(interval);
-                }
-                x++;
-            }, 5);
-        }
-        else if (e.target.id === "cancel") {
-            cancelBtn();
-        }
-        else if (e.target.id === "submit-form") {
-            create(e);
-        }
-        else if (e.target.classList[0] === "star") {
-            starBtn(e);
-        }
-        else if (e.target.classList[0] === "delete-btn") {
-            deleteFn();
-        }
-    })
+    
+    
 
 
 
