@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- fontawesome cdn link for icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="todolist.css">
+    <title>To Do List App</title>
+</head>
+<body>
+     
+        <!--################################
+            CONTAINER - START
+        #################################-->
+
+        <div class="container">
+            <div class="heading">
+                <h1> <i class="fas fa-clipboard-list"></i> To Do App</h1>
+
+                <!-- to do -->
+            <h4> <span id="taskCount">0</span> Tasks</h4>
+            </div>
+
+            <button class="plus">+</button>
+
+            <!--################################
+            EMPTY TASKS DIV - START
+        #################################-->
+            <div class="no-tasks">
+    
+                <div class="emptylist">
+                </div>
+                <div class="message">
+                    <h1>Congratulation! There is no task to do.</h1>
+                </div>
+            </div>
+            <!----------------------------------
+                   EMPTY TASKS DIV -END 
+            ------------------------------------>
+
+            <!--################################
+               TO-DO-INPUTS - START
+      #################################-->
+        <div class="to-do-inputs  animate__animated">
+            <form action="/task" method="post">
+                <div class="task-div">
+                    <h3>Task:</h3>
+                    <input type="text" id="task" name="task" required placeholder="What do you need to do?">
+                </div>
+                <div class="category-div">
+                    <h3>Categories:</h3>
+                    <select name="tag" id="categories">
+                        <option value="none" disabled selected>Select Categories</option>
+                        <option value="home">Home</option>
+                        <option value="professional">professional</option>
+                        <option value="personal">Personal</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="date-div">
+                    <h3>Date:</h3>
+                    <input type="date" id="date" name="date" placeholder="What do you need to do?">
+                </div>
+                <div class="button-div">
+                    <button type="submit">Add Task</button> <br><br>
+                </div>
+            </form>
+            <button id="cancel">Cancel</button>
+        </div>
+           <!----------------------------------
+                TO-DO-INPUT DIV -END 
+        ------------------------------------>
+            
+
+        </div>
+
+        
+
+    <script src="todolist.js"></script>
+</body>
+</html>
